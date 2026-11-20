@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Отзывы — Feedback Collector</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <a class="brand" href="/"><span class="logo" aria-hidden="true">✎</span> Feedback Collector</a>
+      <nav aria-label="Навигация"><a href="/" aria-current="page">Главная</a><a href="/about">О проекте</a></nav>
+    </header>
+    <main>
+      <section class="panel" aria-labelledby="new-feedback">
+        <h1 id="new-feedback">Оставить отзыв</h1>
+        <p class="intro">Поделитесь впечатлениями о сайте. Ваш отзыв появится в общем списке.</p>
+        {{if .Error}}<p class="error" role="alert">{{.Error}}</p>{{end}}
+        <form action="/feedback" method="post">
+          <label for="author">Ваше имя</label>
+          <input id="author" name="author" value="{{.Author}}" placeholder="Как к вам обращаться?" autocomplete="name" required>
+          <label for="message">Текст отзыва</label>
+          <textarea id="message" name="message" rows="4" placeholder="Напишите ваш отзыв…" required>{{.Message}}</textarea>
+          <div class="submit-row"><button type="submit">Отправить отзыв</button></div>
+        </form>
+      </section>
+      <section class="panel" aria-labelledby="feedback-list">
+        <div class="section-heading"><h2 id="feedback-list">Отзывы пользователей</h2><span class="count">Всего: {{.Total}}</span></div>
+        <ul class="feedbacks">
+          {{range .Feedbacks}}
+          <li class="feedback">
+            <div class="feedback-heading"><h3>{{.Author}}</h3><span class="feedback-id">#{{.ID}}</span></div>
+            <p class="message">{{.Message}}</p>
+          </li>
+          {{else}}
+          <li class="empty">Отзывов пока нет. Будьте первым, кто поделится впечатлениями!</li>
+          {{end}}
+        </ul>
+      </section>
+    </main>
+    <footer>Отзывы сохраняются до остановки приложения.</footer>
+  </div>
+</body>
+</html>
